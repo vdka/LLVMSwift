@@ -52,6 +52,18 @@
                 <a href="../Classes/Module.html">Module</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/ObjectFile.html">ObjectFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RelocationSequence.html">RelocationSequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SectionSequence.html">SectionSequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SymbolSequence.html">SymbolSequence</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Target.html">Target</a>
               </li>
               <li class="nav-group-task">
@@ -102,6 +114,9 @@
                 <a href="../Enums/JITError.html">JITError</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/LandingPadClause.html">LandingPadClause</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/Linkage.html">Linkage</a>
               </li>
               <li class="nav-group-task">
@@ -114,6 +129,12 @@
                 <a href="../Enums/OpCode.html">OpCode</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/OpCode/Binary.html">– Binary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/OpCode/Cast.html">– Cast</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/OverflowBehavior.html">OverflowBehavior</a>
               </li>
               <li class="nav-group-task">
@@ -124,6 +145,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums.html#/s:O4LLVM6Signed">Signed</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/StorageClass.html">StorageClass</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/TargetMachineError.html">TargetMachineError</a>
@@ -192,6 +216,9 @@
               <li class="nav-group-task">
                 <a href="../Functions.html#/s:F4LLVMop1sFGVS_8ConstantOS_8Floating_GS0_S1__">-(_:)</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F4LLVM14initializeLLVMFT_T_">initializeLLVM()</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -230,6 +257,9 @@
                 <a href="../Structs/BasicBlock/Address.html">– Address</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Call.html">Call</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/Constant.html">Constant</a>
               </li>
               <li class="nav-group-task">
@@ -243,6 +273,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/IntType.html">IntType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Invoke.html">Invoke</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/LabelType.html">LabelType</a>
@@ -260,10 +293,22 @@
                 <a href="../Structs/PointerType.html">PointerType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Relocation.html">Relocation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Section.html">Section</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/StructType.html">StructType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/Switch.html">Switch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Symbol.html">Symbol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TerminatorInstruction.html">TerminatorInstruction</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/TokenType.html">TokenType</a>
@@ -383,7 +428,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The type to cast towards.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -392,8 +436,8 @@ safely convert constants to other representations.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A const value representing this value cast to the given integral type.</p>
-
+                        <p>A const value representing this value cast to the given
+integral type.</p>
                       </div>
                     </section>
                   </div>
@@ -435,7 +479,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The type to cast towards.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -444,8 +487,8 @@ safely convert constants to other representations.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A const value representing this value cast to the given floating type.</p>
-
+                        <p>A const value representing this value cast to the given 
+floating type.</p>
                       </div>
                     </section>
                   </div>
@@ -498,7 +541,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The operand to negate.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -510,8 +552,8 @@ safely convert constants to other representations.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Should overflow occur, specifies the behavior of the resulting constant value.</p>
-
+                                  <p>Should overflow occur, specifies the
+behavior of the resulting constant value.</p>
                                 </div>
                               </td>
                             </tr>
@@ -521,7 +563,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the negation of the given constant.</p>
-
                       </div>
                     </section>
                   </div>
@@ -563,7 +604,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first summand value (the augend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -576,7 +616,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second summand value (the addend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -588,8 +627,8 @@ safely convert constants to other representations.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Should overflow occur, specifies the behavior of the resulting constant value.</p>
-
+                                  <p>Should overflow occur, specifies the
+behavior of the resulting constant value.</p>
                                 </div>
                               </td>
                             </tr>
@@ -599,7 +638,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the sum of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -641,7 +679,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first summand value (the augend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -654,7 +691,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second summand value (the addend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -664,7 +700,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the sum of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -706,7 +741,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first value (the minuend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -719,7 +753,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second value (the subtrahend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -731,8 +764,8 @@ safely convert constants to other representations.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Should overflow occur, specifies the behavior of the resulting constant value.</p>
-
+                                  <p>Should overflow occur, specifies the
+behavior of the resulting constant value.</p>
                                 </div>
                               </td>
                             </tr>
@@ -742,7 +775,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the difference of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -784,7 +816,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first value (the minuend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -797,7 +828,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second value (the subtrahend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -807,7 +837,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the difference of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -849,7 +878,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first factor value (the multiplier).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -862,7 +890,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second factor value (the multiplicand).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -874,8 +901,8 @@ safely convert constants to other representations.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Should overflow occur, specifies the behavior of the resulting constant value.</p>
-
+                                  <p>Should overflow occur, specifies the
+behavior of the resulting constant value.</p>
                                 </div>
                               </td>
                             </tr>
@@ -885,7 +912,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the product of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -927,7 +953,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The first factor value (the multiplier).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -940,7 +965,6 @@ safely convert constants to other representations.</p>
                               <td>
                                 <div>
                                   <p>The second factor value (the multiplicand).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -950,7 +974,6 @@ safely convert constants to other representations.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>A constant value representing the product of the two operands.</p>
-
                       </div>
                     </section>
                   </div>
@@ -993,7 +1016,6 @@ the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value (the dividend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1006,7 +1028,6 @@ the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value (the divisor).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1015,8 +1036,8 @@ the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the quotient of the first and second operands.</p>
-
+                        <p>A constant value representing the quotient of the first and 
+second operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1059,7 +1080,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value (the dividend).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1072,7 +1092,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value (the divisor).</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1081,8 +1100,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the remainder of division of the first operand by the second operand.</p>
-
+                        <p>A constant value representing the remainder of division of the
+first operand by the second operand.</p>
                       </div>
                     </section>
                   </div>
@@ -1135,7 +1154,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1148,7 +1166,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1157,8 +1174,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant integral value (i1) representing the result of the comparision of the given operands.</p>
-
+                        <p>A constant integral value (i1) representing the result of the 
+comparision of the given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1200,7 +1217,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1213,7 +1229,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1222,8 +1237,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant integral value (i1) representing the result of the comparision of the given operands.</p>
-
+                        <p>A constant integral value (i1) representing the result of the
+comparision of the given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1265,7 +1280,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1278,7 +1292,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1287,8 +1300,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant integral value (i1) representing the result of the comparision of the given operands.</p>
-
+                        <p>A constant integral value (i1) representing the result of the
+comparision of the given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1330,7 +1343,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1343,7 +1355,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1352,8 +1363,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant integral value (i1) representing the result of the comparision of the given operands.</p>
-
+                        <p>A constant integral value (i1) representing the result of the
+comparision of the given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1395,7 +1406,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1408,7 +1418,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second value to compare.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1417,8 +1426,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant integral value (i1) representing the result of the comparision of the given operands.</p>
-
+                        <p>A constant integral value (i1) representing the result of the
+comparision of the given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1471,7 +1480,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The value to negate.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1480,8 +1488,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the logical negation of the given operand.</p>
-
+                        <p>A constant value representing the logical negation of the given
+operand.</p>
                       </div>
                     </section>
                   </div>
@@ -1523,7 +1531,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1536,7 +1543,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1549,7 +1555,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The name for the newly inserted instruction.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1558,8 +1563,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the logical OR of the values of the two given operands.</p>
-
+                        <p>A constant value representing the logical OR of the values of
+the two given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1601,7 +1606,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1614,7 +1618,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1627,7 +1630,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The name for the newly inserted instruction.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1636,8 +1638,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the logical OR of the values of the two given operands.</p>
-
+                        <p>A constant value representing the logical OR of the values of 
+the two given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1679,7 +1681,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1692,7 +1693,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1701,8 +1701,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the exclusive OR of the values of the two given operands.</p>
-
+                        <p>A constant value representing the exclusive OR of the values of
+the two given operands.</p>
                       </div>
                     </section>
                   </div>
@@ -1755,7 +1755,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The first operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1768,7 +1767,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The second operand.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1777,8 +1775,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the value of the first operand shifted left by the number of bits specified in the second operand.</p>
-
+                        <p>A constant value representing the value of the first operand
+shifted left by the number of bits specified in the second operand.</p>
                       </div>
                     </section>
                   </div>
@@ -1830,8 +1828,8 @@ of the first value by the second value.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The condition to evaluate.  It must have type <code>i1</code> or be a vector of <code>i1</code>.</p>
-
+                                  <p>The condition to evaluate.  It must have type <code>i1</code> or
+be a vector of <code>i1</code>.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1844,7 +1842,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The value to select if the given condition is true.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1857,7 +1854,6 @@ of the first value by the second value.</p>
                               <td>
                                 <div>
                                   <p>The value to select if the given condition is false.</p>
-
                                 </div>
                               </td>
                             </tr>
@@ -1866,8 +1862,8 @@ of the first value by the second value.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A constant value representing the constant value selected for by the condition.</p>
-
+                        <p>A constant value representing the constant value selected for
+by the condition.</p>
                       </div>
                     </section>
                   </div>
@@ -1877,8 +1873,8 @@ of the first value by the second value.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-02-15)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-08-30)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

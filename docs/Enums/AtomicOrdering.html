@@ -52,6 +52,18 @@
                 <a href="../Classes/Module.html">Module</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/ObjectFile.html">ObjectFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RelocationSequence.html">RelocationSequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SectionSequence.html">SectionSequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SymbolSequence.html">SymbolSequence</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Target.html">Target</a>
               </li>
               <li class="nav-group-task">
@@ -102,6 +114,9 @@
                 <a href="../Enums/JITError.html">JITError</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/LandingPadClause.html">LandingPadClause</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/Linkage.html">Linkage</a>
               </li>
               <li class="nav-group-task">
@@ -114,6 +129,12 @@
                 <a href="../Enums/OpCode.html">OpCode</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/OpCode/Binary.html">– Binary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/OpCode/Cast.html">– Cast</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/OverflowBehavior.html">OverflowBehavior</a>
               </li>
               <li class="nav-group-task">
@@ -124,6 +145,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums.html#/s:O4LLVM6Signed">Signed</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/StorageClass.html">StorageClass</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/TargetMachineError.html">TargetMachineError</a>
@@ -192,6 +216,9 @@
               <li class="nav-group-task">
                 <a href="../Functions.html#/s:F4LLVMop1sFGVS_8ConstantOS_8Floating_GS0_S1__">-(_:)</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F4LLVM14initializeLLVMFT_T_">initializeLLVM()</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -230,6 +257,9 @@
                 <a href="../Structs/BasicBlock/Address.html">– Address</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Call.html">Call</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/Constant.html">Constant</a>
               </li>
               <li class="nav-group-task">
@@ -243,6 +273,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/IntType.html">IntType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Invoke.html">Invoke</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/LabelType.html">LabelType</a>
@@ -260,10 +293,22 @@
                 <a href="../Structs/PointerType.html">PointerType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Relocation.html">Relocation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Section.html">Section</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/StructType.html">StructType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/Switch.html">Switch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Symbol.html">Symbol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TerminatorInstruction.html">TerminatorInstruction</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/TokenType.html">TokenType</a>
@@ -586,17 +631,7 @@ address in this global order. This corresponds to the C++0x/C1x
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Provides Acquire semantics for loads and Release semantics for stores.</p>
-
-<p>In addition to the guarantees of acq_rel (acquire for an operation that
-only reads, release for an operation that only writes), there is a global
-total order on all sequentially-consistent operations on all addresses,
-which is consistent with the happens-before partial order and with the
-modification orders of all the affected addresses. Each
-sequentially-consistent read sees the last preceding write to the same
-address in this global order. This corresponds to the C++0x/C1x
-<code>memory_order_seq_cst</code> and Java volatile.</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -618,8 +653,7 @@ address in this global order. This corresponds to the C++0x/C1x
                               </td>
                               <td>
                                 <div>
-                                  <p>A value to compare.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>
@@ -631,8 +665,7 @@ address in this global order. This corresponds to the C++0x/C1x
                               </td>
                               <td>
                                 <div>
-                                  <p>Another value to compare.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>
@@ -655,17 +688,7 @@ address in this global order. This corresponds to the C++0x/C1x
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Provides Acquire semantics for loads and Release semantics for stores.</p>
-
-<p>In addition to the guarantees of acq_rel (acquire for an operation that
-only reads, release for an operation that only writes), there is a global
-total order on all sequentially-consistent operations on all addresses,
-which is consistent with the happens-before partial order and with the
-modification orders of all the affected addresses. Each
-sequentially-consistent read sees the last preceding write to the same
-address in this global order. This corresponds to the C++0x/C1x
-<code>memory_order_seq_cst</code> and Java volatile.</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -687,8 +710,7 @@ address in this global order. This corresponds to the C++0x/C1x
                               </td>
                               <td>
                                 <div>
-                                  <p>A value to compare.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>
@@ -700,8 +722,7 @@ address in this global order. This corresponds to the C++0x/C1x
                               </td>
                               <td>
                                 <div>
-                                  <p>Another value to compare.</p>
-
+                                  
                                 </div>
                               </td>
                             </tr>
@@ -743,8 +764,8 @@ address in this global order. This corresponds to the C++0x/C1x
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-02-15)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-08-30)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
