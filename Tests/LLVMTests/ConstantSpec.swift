@@ -20,9 +20,9 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // SIGNEDCONST-NOT: %{{[0-9]+}} = add i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.add(constant), constant.multiply(constant))
+      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
       // SIGNEDCONST-NOT: %{{[0-9]+}} = sub i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtract(constant), constant.divide(constant))
+      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
       // SIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
       // SIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
@@ -50,9 +50,9 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = add i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.add(constant), constant.multiply(constant))
+      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = sub i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtract(constant), constant.divide(constant))
+      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
 
@@ -78,9 +78,9 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // FLOATINGCONST-NOT: %{{[0-9]+}} = add double %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.add(constant), constant.multiply(constant))
+      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
       // FLOATINGCONST-NOT: %{{[0-9]+}} = sub double %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtract(constant), constant.divide(constant))
+      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
       // FLOATINGCONST-NOT: %{{[0-9]+}} = mul double %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
 
@@ -101,7 +101,7 @@ class ConstantSpec : XCTestCase {
                                                         returnType: VoidType()))
 
       let constant = StructType(elementTypes: [IntType.int64])
-        .constant(values: [Int64(42).asLLVM()])
+        .constant(values: [42])
 
       // STRUCTCONST-NEXT: entry:
       let entry = main.appendBasicBlock(named: "entry")
@@ -110,6 +110,31 @@ class ConstantSpec : XCTestCase {
       // STRUCTCONST-NEXT: ret { i64 } { i64 42 }
       builder.buildRet(constant)
       // STRUCTCONST-NEXT: }
+      module.dump()
+    })
+
+    XCTAssert(fileCheckOutput(of: .stderr, withPrefixes: ["STRUCTCONSTGETELEMENT"]) {
+      // STRUCTCONSTGETELEMENT: ; ModuleID = '[[ModuleName:ConstantTest]]'
+      // STRUCTCONSTGETELEMENT-NEXT: source_filename = "[[ModuleName]]"
+      let module = Module(name: "ConstantTest")
+      let builder = IRBuilder(module: module)
+      // STRUCTCONSTGETELEMENT: define void @main() {
+      let main = builder.addFunction("main",
+                                     type: FunctionType(argTypes: [],
+                                                        returnType: VoidType()))
+
+      let constant = StructType(elementTypes: [IntType.int64])
+        .constant(values: [42])
+
+      // STRUCTCONSTGETELEMENT-NEXT: entry:
+      let entry = main.appendBasicBlock(named: "entry")
+      builder.positionAtEnd(of: entry)
+
+      let firstElement = constant.getElement(indices: [0])
+
+      // STRUCTCONSTGETELEMENT-NEXT: ret i64 42
+      builder.buildRet(firstElement)
+      // STRUCTCONSTGETELEMENT-NEXT: }
       module.dump()
     })
   }
