@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -13,12 +13,6 @@ public extension IRValue {
   /// Retrieves the type of this value.
   public var type: IRType {
     return convertType(LLVMTypeOf(asLLVM()))
-  }
-
-  /// Retrieves the alignment of this value.
-  public var alignment: Int {
-    get { return Int(LLVMGetAlignment(asLLVM())) }
-    set { LLVMSetAlignment(asLLVM(), UInt32(newValue)) }
   }
 
   /// Returns whether this value is a constant.

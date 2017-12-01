@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -22,11 +22,11 @@ public class Context {
     self.ownsContext = ownsContext
   }
 
-    deinit {
-        if ownsContext {
-            LLVMContextDispose(llvm)
-        }
+  deinit {
+    if ownsContext {
+      LLVMContextDispose(llvm)
     }
+  }
 }
 
 /// Represents the possible errors that can be thrown while interacting with a

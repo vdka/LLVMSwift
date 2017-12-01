@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -31,13 +31,8 @@ public extension IRType {
   }
 
   /// Returns the context associated with this type
-  public func context() -> Context {
+  public var context: Context {
     return Context(llvm: LLVMGetTypeContext(asLLVM()))
-  }
-
-  /// Dumps a representation of this type to stderr.
-  public func dump() {
-    LLVMDumpType(asLLVM())
   }
 }
 
@@ -83,11 +78,11 @@ internal func convertType(_ type: LLVMTypeRef) -> IRType {
     let count = Int(LLVMGetVectorSize(type))
     return VectorType(elementType: elementType, count: count)
   case LLVMMetadataTypeKind:
-    return MetadataType(llvm: type)
+    return MetadataType(in: context)
   case LLVMX86_MMXTypeKind:
     return X86MMXType(in: context)
   case LLVMTokenTypeKind:
-    return TokenType(llvm: type)
+    return TokenType(in: context)
   default: fatalError("unknown type kind for type \(type)")
   }
 }

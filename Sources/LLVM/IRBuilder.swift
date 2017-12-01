@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -497,10 +497,7 @@ public class IRBuilder {
   public func buildAdd(_ lhs: IRValue, _ rhs: IRValue,
                        overflowBehavior: OverflowBehavior = .default,
                        name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -535,10 +532,7 @@ public class IRBuilder {
   public func buildSub(_ lhs: IRValue, _ rhs: IRValue,
                        overflowBehavior: OverflowBehavior = .default,
                        name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -573,10 +567,7 @@ public class IRBuilder {
   public func buildMul(_ lhs: IRValue, _ rhs: IRValue,
                        overflowBehavior: OverflowBehavior = .default,
                        name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -613,10 +604,7 @@ public class IRBuilder {
   public func buildRem(_ lhs: IRValue, _ rhs: IRValue,
                        signed: Bool = true,
                        name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -653,10 +641,7 @@ public class IRBuilder {
   public func buildDiv(_ lhs: IRValue, _ rhs: IRValue,
                        signed: Bool = true, exact: Bool = false,
                        name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -719,10 +704,7 @@ public class IRBuilder {
   public func buildFCmp(_ lhs: IRValue, _ rhs: IRValue,
                         _ predicate: RealPredicate,
                         name: String = "") -> IRValue {
-    var lhsType = lhs.type
-    if let vlhs = lhsType as? VectorType {
-        lhsType = vlhs.elementType
-    }
+    let lhsType = lowerVector(lhs.type)
 
     let lhsVal = lhs.asLLVM()
     let rhsVal = rhs.asLLVM()
@@ -1011,9 +993,9 @@ public class IRBuilder {
   /// possibility of control transfering to either the `next` basic block or
   /// the `catch` basic block if an exception occurs.
   ///
-  /// If the callee function returns with the `ret` instruction, control flow 
-  /// will return to the `next` label. If the callee (or any indirect callees) 
-  /// returns via the `resume` instruction or other exception handling 
+  /// If the callee function returns with the `ret` instruction, control flow
+  /// will return to the `next` label. If the callee (or any indirect callees)
+  /// returns via the `resume` instruction or other exception handling
   /// mechanism, control is interrupted and continued at the dynamically nearest
   /// `exception` label.
   ///
@@ -1036,25 +1018,25 @@ public class IRBuilder {
     }
   }
 
-  /// Build a landing pad to specify that a basic block is where an exception 
-  /// lands, and corresponds to the code found in the `catch` portion of a 
+  /// Build a landing pad to specify that a basic block is where an exception
+  /// lands, and corresponds to the code found in the `catch` portion of a
   /// `try/catch` sequence.
   ///
   /// The clauses are applied in order from top to bottom. If two landing pad
-  /// instructions are merged together through inlining, the clauses from the 
+  /// instructions are merged together through inlining, the clauses from the
   /// calling function are appended to the list of clauses. When the call stack
-  /// is being unwound due to an exception being thrown, the exception is 
-  /// compared against each clause in turn. If it doesn’t match any of the 
+  /// is being unwound due to an exception being thrown, the exception is
+  /// compared against each clause in turn. If it doesn’t match any of the
   /// clauses, and the cleanup flag is not set, then unwinding continues further
   /// up the call stack.
   ///
   /// The landingpad instruction has several restrictions:
   ///
-  /// - A landing pad block is a basic block which is the unwind destination of 
+  /// - A landing pad block is a basic block which is the unwind destination of
   ///   an `invoke` instruction.
   /// - A landing pad block must have a `landingpad` instruction as its first
   ///   non-PHI instruction.
-  /// - There can be only one `landingpad` instruction within the landing pad 
+  /// - There can be only one `landingpad` instruction within the landing pad
   ///   block.
   /// - A basic block that is not a landing pad block may not include a
   ///   `landingpad` instruction.
@@ -1064,7 +1046,7 @@ public class IRBuilder {
   /// - parameter clauses: A list of `catch` and `filter` clauses.  This list
   ///   must either be non-empty or the landing pad must be marked as a cleanup
   ///   instruction.
-  /// - parameter cleanup: A flag indicating whether the landing pad is a 
+  /// - parameter cleanup: A flag indicating whether the landing pad is a
   ///   cleanup.
   /// - parameter name: The name for the newly inserted instruction.
   ///
@@ -1081,13 +1063,13 @@ public class IRBuilder {
     return lp
   }
 
-  /// Build a resume instruction to resume propagation of an existing 
-  /// (in-flight) exception whose unwinding was interrupted with a 
+  /// Build a resume instruction to resume propagation of an existing
+  /// (in-flight) exception whose unwinding was interrupted with a
   /// `landingpad` instruction.
   ///
-  /// When all cleanups are finished, if an exception is not handled by the 
-  /// current function, unwinding resumes by calling the resume instruction, 
-  /// passing in the result of the `landingpad` instruction for the original 
+  /// When all cleanups are finished, if an exception is not handled by the
+  /// current function, unwinding resumes by calling the resume instruction,
+  /// passing in the result of the `landingpad` instruction for the original
   /// landing pad.
   ///
   /// - parameter: A value representing the result of the original landing pad.
@@ -1097,9 +1079,9 @@ public class IRBuilder {
   public func buildResume(_ val: IRValue) -> IRValue {
     return LLVMBuildResume(llvm, val.asLLVM())
   }
-  
+
   /// Build a `va_arg` instruction to access arguments passed through the
-  /// "variable argument" area of a function call. 
+  /// "variable argument" area of a function call.
   ///
   /// This instruction is used to implement the `va_arg` macro in C.
   ///
@@ -1107,7 +1089,7 @@ public class IRBuilder {
   /// - parameter type: The type of values in the variable argument area.
   /// - parameter name: The name for the newly inserted instruction.
   ///
-  /// - returns: A value of the specified argument type.  In addition, the 
+  /// - returns: A value of the specified argument type.  In addition, the
   ///   `va_list` pointer is incremented to point to the next argument.
   public func buildVAArg(_ list: IRValue, type: IRType, name: String = "") -> IRValue {
     return LLVMBuildVAArg(llvm, list.asLLVM(), type.asLLVM(), name)
@@ -1120,11 +1102,14 @@ public class IRBuilder {
   ///
   /// - parameter type: The sized type used to determine the amount of stack
   ///   memory to allocate.
+  /// - parameter alignment: The alignment of the access.
   /// - parameter name: The name for the newly inserted instruction.
   ///
   /// - returns: A value representing `void`.
-  public func buildAlloca(type: IRType, name: String = "") -> IRValue {
-    return LLVMBuildAlloca(llvm, type.asLLVM(), name)
+  public func buildAlloca(type: IRType, alignment: Int = 0, name: String = "") -> IRValue {
+    let allocaInst = LLVMBuildAlloca(llvm, type.asLLVM(), name)!
+    LLVMSetAlignment(allocaInst, UInt32(alignment))
+    return allocaInst
   }
 
   /// Builds a store instruction that stores the first value into the location
@@ -1135,13 +1120,15 @@ public class IRBuilder {
   /// - parameter ordering: The ordering effect of the fence for this store,
   ///   if any.  Defaults to a nonatomic store.
   /// - parameter volatile: Whether this is a store to a volatile memory location.
+  /// - parameter alignment: The alignment of the access.
   ///
   /// - returns: A value representing `void`.
   @discardableResult
-  public func buildStore(_ val: IRValue, to ptr: IRValue, ordering: AtomicOrdering = .notAtomic, volatile: Bool = false) -> IRValue {
+  public func buildStore(_ val: IRValue, to ptr: IRValue, ordering: AtomicOrdering = .notAtomic, volatile: Bool = false, alignment: Int = 0) -> IRValue {
     let storeInst = LLVMBuildStore(llvm, val.asLLVM(), ptr.asLLVM())!
     LLVMSetOrdering(storeInst, ordering.llvm)
     LLVMSetVolatile(storeInst, volatile.llvm)
+    LLVMSetAlignment(storeInst, UInt32(alignment))
     return storeInst
   }
 
@@ -1152,14 +1139,16 @@ public class IRBuilder {
   /// - parameter ordering: The ordering effect of the fence for this load,
   ///   if any.  Defaults to a nonatomic load.
   /// - parameter volatile: Whether this is a load from a volatile memory location.
+  /// - parameter alignment: The alignment of the access.
   /// - parameter name: The name for the newly inserted instruction.
   ///
   /// - returns: A value representing the result of a load from the given
   ///   pointer value.
-  public func buildLoad(_ ptr: IRValue, ordering: AtomicOrdering = .notAtomic, volatile: Bool = false, name: String = "") -> IRValue {
+  public func buildLoad(_ ptr: IRValue, ordering: AtomicOrdering = .notAtomic, volatile: Bool = false, alignment: Int = 0, name: String = "") -> IRValue {
     let loadInst = LLVMBuildLoad(llvm, ptr.asLLVM(), name)!
     LLVMSetOrdering(loadInst, ordering.llvm)
     LLVMSetVolatile(loadInst, volatile.llvm)
+    LLVMSetAlignment(loadInst, UInt32(alignment))
     return loadInst
   }
 
@@ -1318,7 +1307,7 @@ public class IRBuilder {
   public func buildAddrSpaceCast(_ val: IRValue, type: IRType, name: String = "") -> IRValue {
     return LLVMBuildAddrSpaceCast(llvm, val.asLLVM(), type.asLLVM(), name)
   }
-  
+
   /// Builds a truncate instruction to truncate the given value to the given
   /// type with a shorter width.
   ///
@@ -1442,11 +1431,11 @@ public class IRBuilder {
     return LLVMSizeOf(val.asLLVM())
   }
 
-  /// Builds an expression that returns the difference between two pointer 
+  /// Builds an expression that returns the difference between two pointer
   /// values, dividing out the size of the pointed-to objects.
   ///
-  /// This is intended to implement C-style pointer subtraction. As such, the 
-  /// pointers must be appropriately aligned for their element types and 
+  /// This is intended to implement C-style pointer subtraction. As such, the
+  /// pointers must be appropriately aligned for their element types and
   /// pointing into the same object.
   ///
   /// - parameter lhs: The first pointer (the minuend).
@@ -1799,4 +1788,12 @@ public class IRBuilder {
   deinit {
     LLVMDisposeBuilder(llvm)
   }
+}
+
+private func lowerVector(_ type: IRType) -> IRType {
+    guard let vectorType = type as? VectorType else {
+        return type
+    }
+
+    return vectorType.elementType
 }

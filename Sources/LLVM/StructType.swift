@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -37,14 +37,10 @@ public struct StructType: IRType {
   ///   no packing between fields.  Defaults to `false`.
   /// - parameter context: The context to create this type in
   /// - SeeAlso: http://llvm.org/docs/ProgrammersManual.html#achieving-isolation-with-llvmcontext
-  public init(elementTypes: [IRType], isPacked: Bool = false, in context: Context? = nil) {
+  public init(elementTypes: [IRType], isPacked: Bool = false, in context: Context = Context.global) {
     var irTypes = elementTypes.map { $0.asLLVM() as Optional }
     self.llvm = irTypes.withUnsafeMutableBufferPointer { buf in
-      if let context = context {
-        return LLVMStructTypeInContext(context.llvm, buf.baseAddress, UInt32(buf.count), isPacked.llvm)
-      } else {
-        return LLVMStructType(buf.baseAddress, UInt32(buf.count), isPacked.llvm)
-      }
+      return LLVMStructTypeInContext(context.llvm, buf.baseAddress, UInt32(buf.count), isPacked.llvm)
     }
   }
 
@@ -68,7 +64,8 @@ public struct StructType: IRType {
   ///
   /// - returns: A value representing a constant value of this structure type.
   public func constant(values: [IRValue]) -> Constant<Struct> {
-    assert(numericCast(values.count) == LLVMCountStructElementTypes(llvm), "The number of values must match the number of elements in the aggregate")
+    assert(numericCast(values.count) == LLVMCountStructElementTypes(llvm),
+           "The number of values must match the number of elements in the aggregate")
     var vals = values.map { $0.asLLVM() as Optional }
     return vals.withUnsafeMutableBufferPointer { buf in
       return Constant(llvm: LLVMConstNamedStruct(asLLVM(),

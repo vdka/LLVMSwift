@@ -1,4 +1,4 @@
-#if !NO_SWIFTPM
+#if SWIFT_PACKAGE
 import cllvm
 #endif
 
@@ -20,6 +20,23 @@ public struct VectorType: IRType {
   public init(elementType: IRType, count: Int) {
     self.elementType = elementType
     self.count = count
+  }
+
+  /// Creates a constant value of this vector type initialized with the given
+  /// list of values.
+  ///
+  /// - precondition: values.count == vector.count
+  /// - parameter values: A list of values of elements of this vector.
+  ///
+  /// - returns: A value representing a constant value of this vector type.
+  public func constant(_ values: [IRValue]) -> Constant<Vector> {
+    assert(numericCast(values.count) == LLVMGetVectorSize(asLLVM()),
+           "The number of values must match the number of elements in the vector")
+    var vals = values.map { $0.asLLVM() as Optional }
+    return vals.withUnsafeMutableBufferPointer { buf in
+      return Constant(llvm: LLVMConstVector(buf.baseAddress,
+                                            UInt32(buf.count)))
+    }
   }
 
   /// Retrieves the underlying LLVM type object.
