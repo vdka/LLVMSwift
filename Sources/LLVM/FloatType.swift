@@ -57,8 +57,8 @@ public struct FloatType: IRType {
   ///
   /// - returns: A value representing a floating point constant initialized
   ///   with the given Swift double value.
-  public func constant(_ value: Double) -> Constant<Floating> {
-    return Constant(llvm: LLVMConstReal(asLLVM(), value))
+  public func constant(_ value: Double) -> IRValue {
+    return LLVMConstReal(asLLVM(), value)
   }
 
   /// Creates a constant floating value of this type parsed from a string.
@@ -67,9 +67,9 @@ public struct FloatType: IRType {
   ///
   /// - returns: A value representing a constant initialized with the result of
   ///   parsing the string as a floating point number.
-  public func constant(_ value: String) -> Constant<Floating> {
+  public func constant(_ value: String) -> IRValue {
     return value.withCString { cString in
-      return Constant(llvm: LLVMConstRealOfStringAndSize(asLLVM(), cString, UInt32(value.count)))
+      return LLVMConstRealOfStringAndSize(asLLVM(), cString, UInt32(value.count))
     }
   }
 

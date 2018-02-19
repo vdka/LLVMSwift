@@ -53,10 +53,8 @@ public struct IntType: IRType {
   ///
   /// - returns: A value representing an unsigned integer constant initialized
   ///   with the given Swift integer value.
-  public func constant<IntTy: UnsignedInteger>(_ value: IntTy, signExtend: Bool = false) -> Constant<Unsigned> {
-    return Constant(llvm: LLVMConstInt(asLLVM(),
-                          UInt64(value),
-                          signExtend.llvm))
+  public func constant<IntTy: UnsignedInteger>(_ value: IntTy, signExtend: Bool = false) -> IRValue {
+    return LLVMConstInt(asLLVM(), UInt64(value), signExtend.llvm)
   }
 
   /// Creates a signed integer constant value with the given Swift integer value.
@@ -67,10 +65,8 @@ public struct IntType: IRType {
   ///
   /// - returns: A value representing a signed integer constant initialized with
   ///   the given Swift integer value.
-  public func constant<IntTy: SignedInteger>(_ value: IntTy, signExtend: Bool = false) -> Constant<Signed> {
-    return Constant(llvm: LLVMConstInt(asLLVM(),
-                                       UInt64(bitPattern: Int64(value)),
-                                       signExtend.llvm))
+  public func constant<IntTy: SignedInteger>(_ value: IntTy, signExtend: Bool = false) -> IRValue {
+    return LLVMConstInt(asLLVM(), UInt64(bitPattern: Int64(value)), signExtend.llvm)
   }
 
   /// Creates a constant integer value of this type parsed from a string.
@@ -81,9 +77,9 @@ public struct IntType: IRType {
   ///
   /// - returns: A value representing a constant initialized with the result of
   ///   parsing the string as a signed integer.
-  public func constant(_ value: String, radix: Int = 10) -> Constant<Signed> {
+  public func constant(_ value: String, radix: Int = 10) -> IRValue {
     return value.withCString { cString in
-      return Constant(llvm: LLVMConstIntOfStringAndSize(asLLVM(), cString, UInt32(value.count), UInt8(radix)))
+      return LLVMConstIntOfStringAndSize(asLLVM(), cString, UInt32(value.count), UInt8(radix))
     }
   }
 

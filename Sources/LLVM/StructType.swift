@@ -63,14 +63,12 @@ public struct StructType: IRType {
   /// - parameter values: A list of values of members of this structure.
   ///
   /// - returns: A value representing a constant value of this structure type.
-  public func constant(values: [IRValue]) -> Constant<Struct> {
+  public func constant(values: [IRValue]) -> IRValue {
     assert(numericCast(values.count) == LLVMCountStructElementTypes(llvm),
            "The number of values must match the number of elements in the aggregate")
     var vals = values.map { $0.asLLVM() as Optional }
     return vals.withUnsafeMutableBufferPointer { buf in
-      return Constant(llvm: LLVMConstNamedStruct(asLLVM(),
-                                                 buf.baseAddress,
-                                                 UInt32(buf.count)))
+      return LLVMConstNamedStruct(asLLVM(), buf.baseAddress, UInt32(buf.count))
     }
   }
 
@@ -81,12 +79,10 @@ public struct StructType: IRType {
   ///   no packing between fields.  Defaults to `false`.
   ///
   /// - returns: A value representing a constant struct value with given the values.
-  public static func constant(values: [IRValue], isPacked: Bool = false) -> Constant<Struct> {
+  public static func constant(values: [IRValue], isPacked: Bool = false) -> IRValue {
     var vals = values.map { $0.asLLVM() as Optional }
     return vals.withUnsafeMutableBufferPointer { buf in
-      return Constant(llvm: LLVMConstStruct(buf.baseAddress,
-                                            UInt32(buf.count),
-                                            isPacked.llvm))
+      return LLVMConstStruct(buf.baseAddress, UInt32(buf.count), isPacked.llvm)
     }
   }
 

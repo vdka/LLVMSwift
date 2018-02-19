@@ -21,13 +21,13 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // SIGNEDCONST-NOT: %{{[0-9]+}} = add i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
+      let val1 = builder.buildAdd(const.add(constant, constant), const.mul(constant, constant))
       // SIGNEDCONST-NOT: %{{[0-9]+}} = sub i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
+      let val2 = builder.buildSub(const.sub(constant, constant), const.sDiv(constant, constant))
       // SIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
       // SIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val4 = builder.buildMul(val3, constant.negate())
+      let val4 = builder.buildMul(val3, const.neg(constant))
 
       // SIGNEDCONST-NEXT: ret i64 77616
       builder.buildRet(val4)
@@ -51,9 +51,9 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = add i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
+      let val1 = builder.buildAdd(const.add(constant, constant), const.mul(constant, constant))
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = sub i64 %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
+      let val2 = builder.buildSub(const.sub(constant, constant), const.uDiv(constant, constant))
       // UNSIGNEDCONST-NOT: %{{[0-9]+}} = mul i64 %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
 
@@ -79,9 +79,9 @@ class ConstantSpec : XCTestCase {
       builder.positionAtEnd(of: entry)
 
       // FLOATINGCONST-NOT: %{{[0-9]+}} = add double %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val1 = builder.buildAdd(constant.adding(constant), constant.multiplying(constant))
+      let val1 = builder.buildAdd(const.fAdd(constant, constant), const.fMul(constant, constant))
       // FLOATINGCONST-NOT: %{{[0-9]+}} = sub double %%{{[0-9]+}}, %%{{[0-9]+}}
-      let val2 = builder.buildSub(constant.subtracting(constant), constant.dividing(by: constant))
+      let val2 = builder.buildSub(const.fSub(constant, constant), const.fDiv(constant, constant))
       // FLOATINGCONST-NOT: %{{[0-9]+}} = mul double %%{{[0-9]+}}, %%{{[0-9]+}}
       let val3 = builder.buildMul(val1, val2)
 
@@ -131,7 +131,7 @@ class ConstantSpec : XCTestCase {
       let entry = main.appendBasicBlock(named: "entry")
       builder.positionAtEnd(of: entry)
 
-      let firstElement = constant.getElement(indices: [0])
+      let firstElement = const.extractValue(constant, indices: [0])
 
       // STRUCTCONSTGETELEMENT-NEXT: ret i64 42
       builder.buildRet(firstElement)
@@ -158,7 +158,7 @@ class ConstantSpec : XCTestCase {
       let entry = main.appendBasicBlock(named: "entry")
       builder.positionAtEnd(of: entry)
 
-      let firstElement = Constant<Vector>.buildShuffleVector(vec1, and: .undef(vecTy), mask: mask)
+      let firstElement = const.shuffleVector(vec1, vecTy.undef(), mask: mask)
 
       // VECTORCONSTSHUFFLE-IDENTITY-NEXT: ret <4 x i32> <i32 1, i32 2, i32 3, i32 4>
       builder.buildRet(firstElement)
@@ -187,7 +187,7 @@ class ConstantSpec : XCTestCase {
       let entry = main.appendBasicBlock(named: "entry")
       builder.positionAtEnd(of: entry)
 
-      let firstElement = Constant<Vector>.buildShuffleVector(vec1, and: vec2, mask: mask)
+      let firstElement = const.shuffleVector(vec1, vec2, mask: mask)
 
       // VECTORCONSTSHUFFLE-NEXT: ret <8 x i32> <i32 2, i32 4, i32 6, i32 8, i32 1, i32 3, i32 5, i32 7>
       builder.buildRet(firstElement)

@@ -29,13 +29,12 @@ public struct VectorType: IRType {
   /// - parameter values: A list of values of elements of this vector.
   ///
   /// - returns: A value representing a constant value of this vector type.
-  public func constant(_ values: [IRValue]) -> Constant<Vector> {
+  public func constant(_ values: [IRValue]) -> IRValue {
     assert(numericCast(values.count) == LLVMGetVectorSize(asLLVM()),
            "The number of values must match the number of elements in the vector")
     var vals = values.map { $0.asLLVM() as Optional }
     return vals.withUnsafeMutableBufferPointer { buf in
-      return Constant(llvm: LLVMConstVector(buf.baseAddress,
-                                            UInt32(buf.count)))
+      return LLVMConstVector(buf.baseAddress, UInt32(buf.count))
     }
   }
 
