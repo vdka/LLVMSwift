@@ -1,5 +1,5 @@
 # LLVMSwift
-[![Build Status](https://travis-ci.org/trill-lang/LLVMSwift.svg?branch=master)](https://travis-ci.org/trill-lang/LLVMSwift) [![Documentation](https://cdn.rawgit.com/trill-lang/LLVMSwift/master/docs/badge.svg)](https://trill-lang.github.io/LLVMSwift) [![Slack Invite](https://llvmswift-slack.herokuapp.com/badge.svg)](https://llvmswift-slack.herokuapp.com)
+[![Build Status](https://travis-ci.org/llvm-swift/LLVMSwift.svg?branch=master)](https://travis-ci.org/llvm-swift/LLVMSwift) [![Documentation](https://cdn.rawgit.com/llvm-swift/LLVMSwift/master/docs/badge.svg)](https://llvm-swift.github.io/LLVMSwift) [![Slack Invite](https://llvmswift-slack.herokuapp.com/badge.svg)](https://llvmswift-slack.herokuapp.com)
 
 LLVMSwift is a pure Swift interface to the [LLVM](http://llvm.org) API and its associated libraries. It provides native, easy-to-use components to make compiler development fun.
 
@@ -13,15 +13,15 @@ The root unit of organization of an LLVM IR program is a `Module`
 let module = Module(name: "main")
 ```
 
-LLVM IR is construction is done with an `IRBuilder` object.  An `IRBuilder` is a cursor pointed inside a context, and as such has ways of extending that context and moving around inside of it.
+LLVM IR construction is handled by `IRBuilder` objects.  An `IRBuilder` is a cursor pointed inside a context, and as such has ways of extending that context and moving around inside of it.
 
-Defining a simple function and moving the cursor to a point where we can begin inserting instructions is done like so:
+Defining a function and moving the cursor to a point where we can begin inserting instructions is done like so:
 
 ```swift
 let builder = IRBuilder(module: module)
 
 let main = builder.addFunction(
-             name: "main", 
+             "main",
              type: FunctionType(argTypes: [],
              returnType: VoidType())
            )
@@ -107,7 +107,7 @@ builder.positionAtEnd(of: entryBB)
 let local = builder.buildAlloca(type: FloatType.double, name: "local")
 
 // Compare to the condition
-let test = builder.buildICmp(function.parameters[0], IntType.int1.zero(), .notEqual)
+let test = builder.buildICmp(function.parameters[0], IntType.int1.zero(), .equal)
 
 // Create basic blocks for "then", "else", and "merge"
 let thenBB = function.appendBasicBlock(named: "then")
@@ -183,10 +183,10 @@ print(fn(false)) // 0.0112359550561798...
 
 ## Installation
 
-There are a couple, annoying steps you need to get it working before it'll
-build.
+There are a couple annoying steps you need to accomplish before building
+LLVMSwift:
 
-- Install LLVM 4.0 using your favorite package manager. For example:
+- Install LLVM 5.0+ using your favorite package manager. For example:
   - `brew install llvm`
 - Ensure `llvm-config` is in your `PATH`
   - That will reside in the `/bin` folder wherever your package manager
@@ -196,6 +196,12 @@ build.
 
 Once you do that, you can add LLVMSwift as a dependency for your own Swift
 compiler projects!
+
+### Installation with Swift Package Manager
+
+```swift
+.package(url: "https://github.com/llvm-swift/LLVMSwift.git", from: "0.2.0")
+```
 
 ### Installation without Swift Package Manager
 
@@ -223,3 +229,4 @@ all its code generation.
 
 This project is released under the MIT license, a copy of which is available
 in this repo.
+

@@ -4,10 +4,13 @@ import XCTest
 
 #if !os(macOS)
 XCTMain([
-  IRBuilderSpec.allTests,
   ConstantSpec.allTests,
-  IRExceptionSpec.allTests,
-  IROperationSpec.allTests,
   FileCheckSpec.allTests,
+  IRBuilderSpec.allTests,
+  IRExceptionSpec.allTests,
+  IRGlobalSpec.allTests,
+  IROperationSpec.allTests,
+  JITSpec.allTests,
+  ModuleLinkSpec.allTests,
 ])
 #endif
