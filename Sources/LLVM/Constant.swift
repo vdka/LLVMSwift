@@ -972,7 +972,7 @@ extension Constant {
   }
 }
 
-// MARK: Constant Pointer To Integer
+// MARK: Constant Pointer & Integer Conversions
 
 extension Constant where Repr: IntegralConstantRepresentation {
   /// Creates a constant pointer-to-integer operation to convert the given constant
@@ -987,22 +987,54 @@ extension Constant where Repr: IntegralConstantRepresentation {
     precondition(val.isConstant, "May only convert global constant pointers to integers")
     return Constant<Repr>(llvm: LLVMConstPtrToInt(val.asLLVM(), intType.asLLVM()))
   }
+
+  /// Creates a constant integer-to-pointer operation to convert the given constant
+  /// integer value to the given pointer type.
+  ///
+  /// - parameter val: The integer value.
+  /// - parameter intType: The destination pointer type.
+  ///
+  /// - returns: An constant value representing the constant value of the given
+  ///   integer converted to the given pointer type.
+  public static func intToPointer(_ val: IRValue, _ pointerType: PointerType) -> Constant {
+    precondition(val.isConstant)
+    precondition(val.type is IntType)
+    return Constant<Repr>(llvm: LLVMConstIntToPtr(val.asLLVM(), pointerType.asLLVM()))
+  }
+
+  public static func bitcast(_ val: IRValue, to target: IntType) -> Constant {
+    precondition(val.isConstant)
+    precondition(!(val.type is PointerType), "If the source type is a pointer, the destination type must also be a pointer of the same size, use pointerToInt instead")
+    return Constant<Repr>(llvm: LLVMConstBitCast(val.asLLVM(), target.asLLVM()))
+  }
+
+  public static func bitcast(_ val: IRValue, to target: PointerType) -> Constant {
+    return Constant<Repr>(llvm: LLVMConstBitCast(val.asLLVM(), target.asLLVM()))
+  }
 }
 
 // MARK: Struct Operations
 
 extension Constant where Repr == Struct {
 
-  /// Creates a constant operation retrieving the element at the index.
+  /// Creates a constant operation retrieving the value at the index.
   ///
-  /// - parameter indices: A list of indices that indicate which of the elements
+  /// - parameter indices: A list of indices that indicate which of the values
   ///   of the aggregate object are indexed.
   ///
   /// - returns: The value in the struct at the provided index.
-  public func getElement(indices: [Int]) -> IRValue {
+  public func extractValue(indices: [Int]) -> IRValue {
     var indices = indices.map({ UInt32($0) })
     return indices.withUnsafeMutableBufferPointer { buf in
       return LLVMConstExtractValue(asLLVM(), buf.baseAddress, UInt32(buf.count))
+    }
+  }
+
+  public func insertValue(_ val: IRValue, _ indices: [Int]) -> Constant {
+    precondition(val.isConstant)
+    var indices = indices.map({ UInt32($0) })
+    return indices.withUnsafeMutableBufferPointer { buf in
+      return Constant<Repr>(llvm: LLVMConstInsertValue(asLLVM(), val.asLLVM(), buf.baseAddress, UInt32(buf.count)))
     }
   }
 }
